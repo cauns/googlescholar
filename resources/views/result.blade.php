@@ -39,14 +39,14 @@
                                     <td>
                                         <div class="widget-26-job-info">
                                             <p class="type m-0">
-                                                <?php echo isset($pub['total_citations_minus_author']) ? $pub['total_citations_minus_author']: 0;?>
+                                                <?php echo isset($pub['total_out_author']) ? $pub['total_out_author']: 0;?>
                                             </p>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="widget-26-job-info">
                                             <p class="type m-0">
-                                                <?php echo isset($pub['total_citations_author']) ? $pub['total_citations_author'] : 0;?>
+                                                <?php echo isset($pub['total_only_author']) ? $pub['total_only_author'] : 0;?>
                                             </p>
                                         </div>
                                     </td>
