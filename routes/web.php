@@ -18,3 +18,6 @@ Route::get('/', function () {
 });
 Route::get('home',[\App\Http\Controllers\HomeController::class,'index'])->name('home');
 Route::post('search',[\App\Http\Controllers\HomeController::class,'search'])->name('search');
+
+
+Route::resource('authors', App\Http\Controllers\AuthorController::class);
