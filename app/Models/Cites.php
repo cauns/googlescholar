@@ -4,11 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Modles\AuthorCiteArticle;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Cites extends Model
 {
+    use SoftDeletes;
+
     use HasFactory;
+
+    public $table = 'cites';
     public $id;
     public $cites_id;
     public $total;

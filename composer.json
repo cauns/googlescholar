@@ -12,7 +12,8 @@
         "laravel/framework": "^8.40",
         "laravel/tinker": "^2.5",
         "voku/portable-utf8": "^5.4",
-        "voku/simple_html_dom": "^4.7"
+        "voku/simple_html_dom": "^4.7",
+        "yajra/laravel-datatables-oracle": "^9.18"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

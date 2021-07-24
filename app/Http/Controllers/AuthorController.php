@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Author;
 use Illuminate\Http\Request;
 
 class AuthorController extends Controller
@@ -11,9 +12,19 @@ class AuthorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $authors = Author::all();
+            return datatables()->of($authors)
+                ->addColumn('action', function ($row) {
+                    $html = '<a href="#" class="btn btn-xs btn-secondary btn-edit">Edit</a> ';
+                    $html .= '<button data-rowid="' . $row->id . '" class="btn btn-xs btn-danger btn-delete">Del</button>';
+                    return $html;
+                })->toJson();
+        }
+
+        return view('authors.index');
     }
 
     /**
@@ -34,7 +45,8 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Author::create($request->all());
+        return ['success' => true, 'message' => 'Inserted Successfully'];
     }
 
     /**
@@ -45,7 +57,7 @@ class AuthorController extends Controller
      */
     public function show($id)
     {
-        //
+        return;
     }
 
     /**
@@ -68,7 +80,8 @@ class AuthorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Author::find($id)->update(request()->all());
+        return ['success' => true, 'message' => 'Updated Successfully'];
     }
 
     /**
@@ -79,6 +92,7 @@ class AuthorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Author::find($id)->delete();
+        return ['success' => true, 'message' => 'Deleted Successfully'];
     }
 }

@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Modles\Author;
-use App\Modles\AuthorCiteArticle;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends Model
 {
+    use SoftDeletes;
+
     use HasFactory;
+
+    public $table = 'articles';
     public $id;
     public $title;
     public $link;

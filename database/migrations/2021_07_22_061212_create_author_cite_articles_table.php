@@ -20,6 +20,7 @@ class CreateAuthorCiteArticlesTable extends Migration
             $table->string('cites_id');
             $table->boolean('by_author')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

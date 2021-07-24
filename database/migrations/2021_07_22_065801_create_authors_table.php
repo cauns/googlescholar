@@ -17,6 +17,10 @@ class CreateAuthorsTable extends Migration
         Schema::create('authors', function (Blueprint $table) {
             $table->id('id');
             $table->timestamps();
+            $table->string('author_id');
+            $table->string('alias_name');
+            $table->string('link')->nullable();
+            $table->string('author_group')->nullable();
             $table->softDeletes();
         });
     }
