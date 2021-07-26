@@ -9,8 +9,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Author
  * @package App\Models
- * @version July 22, 2021, 6:58 am UTC
+ * @version July 24, 2021, 10:27 am UTC
  *
+ * @property string $author_id
+ * @property string $alias_name
+ * @property string $link
+ * @property string $author_group
  */
 class Author extends Model
 {
@@ -19,18 +23,17 @@ class Author extends Model
     use HasFactory;
 
     public $table = 'authors';
-
-    public $link;
-    public $alias_name;
-    public $author_id;
-    public $author_group;
+    
 
     protected $dates = ['deleted_at'];
 
 
 
     public $fillable = [
-        
+        'author_id',
+        'alias_name',
+        'link',
+        'author_group'
     ];
 
     /**
@@ -39,7 +42,10 @@ class Author extends Model
      * @var array
      */
     protected $casts = [
-        
+        'author_id' => 'string',
+        'alias_name' => 'string',
+        'link' => 'string',
+        'author_group' => 'string'
     ];
 
     /**
@@ -48,8 +54,13 @@ class Author extends Model
      * @var array
      */
     public static $rules = [
-        
+        'author_id' => 'required'
     ];
+
+    public function authorCitesArticle()
+    {
+        return $this->hasMany(AuthorCiteArticle::class);
+    }
 
     
 }

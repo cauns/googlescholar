@@ -22,7 +22,11 @@ class AuthorFactory extends Factory
     public function definition()
     {
         return [
-            'created_at' => $this->faker->date('Y-m-d H:i:s'),
+            'author_id' => $this->faker->word,
+        'alias_name' => $this->faker->word,
+        'link' => $this->faker->word,
+        'author_group' => $this->faker->word,
+        'created_at' => $this->faker->date('Y-m-d H:i:s'),
         'updated_at' => $this->faker->date('Y-m-d H:i:s')
         ];
     }

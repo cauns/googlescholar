@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\checkLinkExits;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Author;
 
 class CreateAuthorRequest extends FormRequest
 {
@@ -25,6 +25,12 @@ class CreateAuthorRequest extends FormRequest
      */
     public function rules()
     {
-        return Author::$rules;
+        return [
+            'author_id' => [
+                'required',
+                new checkLinkExits()
+            ]
+
+        ];
     }
 }

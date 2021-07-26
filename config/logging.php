@@ -46,6 +46,11 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
+        'history' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/history.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
 
         'daily' => [
             'driver' => 'daily',

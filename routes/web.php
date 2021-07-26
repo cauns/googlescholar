@@ -16,8 +16,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('home',[\App\Http\Controllers\HomeController::class,'index'])->name('home');
-Route::post('search',[\App\Http\Controllers\HomeController::class,'search'])->name('search');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::resource('authors', App\Http\Controllers\AuthorController::class);
+Route::resource('authors', App\Http\Controllers\AuthorController::class)->only([
+    'index', 'show','create','store','destroy','edit'
+]);
+Route::get('/test',[\App\Http\Controllers\TestController::class,'index'])->name('test');
+//Route::resource('articles', App\Http\Controllers\ArticleController::class);
+//
+//Route::resource('cites', App\Http\Controllers\CiteController::class);
+//
+//Route::resource('authorCiteArticles', App\Http\Controllers\AuthorCiteArticleController::class);

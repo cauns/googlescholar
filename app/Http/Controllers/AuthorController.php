@@ -2,97 +2,155 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Author;
+use App\Http\Requests\CreateAuthorRequest;
+use App\Http\Requests\UpdateAuthorRequest;
+use App\Repositories\AuthorRepository;
+use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
+use Flash;
+use Response;
 
-class AuthorController extends Controller
+class AuthorController extends AppBaseController
 {
+    /** @var  AuthorRepository */
+    private $authorRepository;
+
+    public function __construct(AuthorRepository $authorRepo)
+    {
+        $this->authorRepository = $authorRepo;
+    }
+
     /**
-     * Display a listing of the resource.
+     * Display a listing of the Author.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return Response
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $authors = Author::all();
-            return datatables()->of($authors)
-                ->addColumn('action', function ($row) {
-                    $html = '<a href="#" class="btn btn-xs btn-secondary btn-edit">Edit</a> ';
-                    $html .= '<button data-rowid="' . $row->id . '" class="btn btn-xs btn-danger btn-delete">Del</button>';
-                    return $html;
-                })->toJson();
-        }
+        $authors = $this->authorRepository->all();
 
-        return view('authors.index');
+        return view('authors.index')
+            ->with('authors', $authors);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new Author.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
-        //
+        return view('authors.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created Author in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateAuthorRequest $request
+     *
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateAuthorRequest $request)
     {
-        Author::create($request->all());
-        return ['success' => true, 'message' => 'Inserted Successfully'];
+        $input = $request->all();
+
+        $author = $this->authorRepository->create($input);
+
+        Flash::success('Author saved successfully.');
+
+        return redirect(route('authors.index'));
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified Author.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     *
+     * @return Response
      */
     public function show($id)
     {
-        return;
+        $author = $this->authorRepository->find($id);
+
+        if (empty($author)) {
+            Flash::error('Author not found');
+
+            return redirect(route('authors.index'));
+        }
+
+        return view('authors.show')->with('author', $author);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified Author.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     *
+     * @return Response
      */
     public function edit($id)
     {
-        //
+        $author = $this->authorRepository->find($id);
+
+        if (empty($author)) {
+            Flash::error('Author not found');
+
+            return redirect(route('authors.index'));
+        }
+
+        return view('authors.edit')->with('author', $author);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified Author in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @param UpdateAuthorRequest $request
+     *
+     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update($id, UpdateAuthorRequest $request)
     {
-        Author::find($id)->update(request()->all());
-        return ['success' => true, 'message' => 'Updated Successfully'];
+        $author = $this->authorRepository->find($id);
+
+        if (empty($author)) {
+            Flash::error('Author not found');
+
+            return redirect(route('authors.index'));
+        }
+
+        $author = $this->authorRepository->update($request->all(), $id);
+
+        Flash::success('Author updated successfully.');
+
+        return redirect(route('authors.index'));
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified Author from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     *
+     * @throws \Exception
+     *
+     * @return Response
      */
     public function destroy($id)
     {
-        Author::find($id)->delete();
-        return ['success' => true, 'message' => 'Deleted Successfully'];
+        $author = $this->authorRepository->find($id);
+
+        if (empty($author)) {
+            Flash::error('Author not found');
+
+            return redirect(route('authors.index'));
+        }
+
+        $this->authorRepository->delete($id);
+
+        Flash::success('Author deleted successfully.');
+
+        return redirect(route('authors.index'));
     }
 }
