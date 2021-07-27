@@ -12,7 +12,9 @@ namespace App\Http\Controllers;
 use App\Helpers\ScholarHelper;
 use App\Models\AuthorCiteArticle;
 use App\Models\Cite;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -38,8 +40,8 @@ class TestController extends Controller
                 }
                 $slug = Str::slug($aliasName);
                 Storage::disk('public')->makeDirectory($slug);
-                //$result = $helpers->downloadAllFileQuote($links, public_path('storage/' . $slug));
-                if (true) {
+                $result = $helpers->downloadAllFileQuote($links, public_path('storage/' . $slug));
+                if ($result) {
                     foreach ($items as $item) {
                         $authorCite = AuthorCiteArticle::where('cite_id', $item->cite_id)->where('author_id',$item->author_id)->first();
                         $data = $helpers->setQuoteInArticle('storage/' . $slug . '/' . $item->cite_id . '.html', $item->total);
@@ -51,11 +53,11 @@ class TestController extends Controller
                             $authorCite->save();
                         }
                     }
-                    dd('done');
+                    Log::channel('history')->info('thanh cong');
                 }
             }
         } catch (\Exception $exception) {
-            dd($exception);
+            Log::channel('history')->error('loi: '.$exception->getMessage());
         }
     }
 }
