@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $items = DB::table('author_cite_articles')
+            ->select('cites.cite_id','cites.link_get', 'authors.alias_name','author_cite_articles.total','authors.author_id')
+            ->leftJoin('authors', 'author_cite_articles.author_id', '=', 'authors.author_id')
+            ->leftJoin('cites', 'cites.cite_id', '=', 'author_cite_articles.cite_id')
+            ->get();
+        return response(json_encode($items));
     }
 }
