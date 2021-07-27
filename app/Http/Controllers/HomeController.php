@@ -24,6 +24,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+        return view('home');
+    }
+
+    public function frontEnd()
+    {
         $items = DB::table('author_cite_articles')
             ->select('cites.cite_id','cites.link_get', 'authors.alias_name','author_cite_articles.total','authors.author_id')
             ->leftJoin('authors', 'author_cite_articles.author_id', '=', 'authors.author_id')
