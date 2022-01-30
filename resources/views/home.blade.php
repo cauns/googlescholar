@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-llll
+bbbb
     </div>
 </div>
 @endsection
